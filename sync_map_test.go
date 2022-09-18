@@ -58,4 +58,9 @@ func TestSyncMapRegistry(t *testing.T) {
 	v, ok := reg.Remove("foo")
 	assert.True(t, ok)
 	assert.Equal(t, v, -1)
+
+	// clear
+	err = reg.Clear()
+	assert.NoError(t, err)
+	assert.Zero(t, reg.NumEntries())
 }

@@ -26,6 +26,30 @@ func (s *syncMapRegistry[K, E]) Register(key K, entry E) error {
 	return s.mapRegistry.Register(key, entry)
 }
 
+// Set value with given key
+func (s *syncMapRegistry[K, E]) Set(key K, entry E) E {
+	s.Lock()
+	defer s.Unlock()
+
+	return s.mapRegistry.Set(key, entry)
+}
+
+// Replace value with given key
+func (s *syncMapRegistry[K, E]) Replace(key K, entry E) (E, error) {
+	s.Lock()
+	defer s.Unlock()
+
+	return s.mapRegistry.Replace(key, entry)
+}
+
+// Remove value with given key
+func (s *syncMapRegistry[K, E]) Remove(key K) (E, bool) {
+	s.Lock()
+	defer s.Unlock()
+
+	return s.mapRegistry.Remove(key)
+}
+
 // Exists return true if any entry has been registered with `key`
 func (s *syncMapRegistry[K, E]) Exists(key K) bool {
 	s.RLock()

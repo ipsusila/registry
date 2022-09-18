@@ -11,6 +11,9 @@ var (
 // Registry interface
 type Registry[K comparable, E any] interface {
 	Register(key K, entry E) error
+	Set(key K, entry E) E
+	Replace(key K, entry E) (E, error)
+	Remove(key K) (E, bool)
 	Exists(key K) bool
 	Entry(key K) (E, error)
 	Keys() []K

@@ -41,4 +41,21 @@ func TestSyncMapRegistry(t *testing.T) {
 	entries := reg.Entries()
 	assert.Equal(t, len(entries), len(items))
 	assert.True(t, contains(entries, 1000))
+
+	// replace
+	v, err = reg.Replace("hundred", 101)
+	assert.NoError(t, err)
+	assert.Equal(t, v, 100)
+
+	// Set value
+	v = reg.Set("foo", -1)
+	assert.Equal(t, v, 0)
+
+	v = reg.Set("ten", 11)
+	assert.Equal(t, v, 10)
+
+	// remove foo
+	v, ok := reg.Remove("foo")
+	assert.True(t, ok)
+	assert.Equal(t, v, -1)
 }

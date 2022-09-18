@@ -25,6 +25,35 @@ func (s *mapRegistry[K, E]) Register(key K, entry E) error {
 	return nil
 }
 
+// Set value with given key
+func (s *mapRegistry[K, E]) Set(key K, entry E) E {
+	old := s.entriesMap[key]
+	s.entriesMap[key] = entry
+
+	return old
+}
+
+// Replace value with given key
+func (s *mapRegistry[K, E]) Replace(key K, entry E) (E, error) {
+	old, ok := s.entriesMap[key]
+	if !ok {
+		return old, fmt.Errorf("replace entry %v: %w", key, ErrEntryDoesNotExist)
+	}
+	s.entriesMap[key] = entry
+
+	return old, nil
+}
+
+// Remove value with given key
+func (s *mapRegistry[K, E]) Remove(key K) (E, bool) {
+	old, ok := s.entriesMap[key]
+	if ok {
+		delete(s.entriesMap, key)
+	}
+
+	return old, ok
+}
+
 // Exists return true if any entry has been registered with `key`
 func (s *mapRegistry[K, E]) Exists(key K) bool {
 	_, found := s.entriesMap[key]
